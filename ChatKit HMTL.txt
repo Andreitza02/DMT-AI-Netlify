@@ -1,0 +1,41 @@
+<!-- 1) ChatKit runtime -->
+<script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
+
+<!-- 2) Container -->
+<openai-chatkit id="my-chatkit"></openai-chatkit>
+
+<!-- 3) Init -->
+<script>
+  const chatEl = document.getElementById("my-chatkit");
+
+  function getOrCreateUserId() {
+    const key = "chat_user_id";
+    let id = localStorage.getItem(key);
+    if (!id) {
+      id = (crypto.randomUUID && crypto.randomUUID()) || ("guest_" + Date.now());
+      localStorage.setItem(key, id);
+    }
+    return id;
+  }
+
+  async function initChatKit() {
+    await customElements.whenDefined("openai-chatkit");
+    chatEl.setOptions({
+      frameTitle: "Assistant",
+      api: {
+        async getClientSecret() {
+          const res = await fetch("/api/chatkit-session", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ userId: getOrCreateUserId() })
+          });
+          const data = await res.json();
+          if (!res.ok || !data.client_secret) throw new Error("Session failed");
+          return data.client_secret;
+        }
+      }
+    });
+  }
+
+  initChatKit().catch(console.error);
+</script>
