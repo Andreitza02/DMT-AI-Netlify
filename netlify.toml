@@ -1,0 +1,9 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/api/chatkit/session"
+  to = "/.netlify/functions/chatkit-session"
+  status = 200
+
