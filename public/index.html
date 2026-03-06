@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DMT Electrical Department AI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <div class="ambient-glow ambient-glow-left"></div>
+      <div class="ambient-glow ambient-glow-right"></div>
+
+      <section class="assistant-stage">
+        <div class="assistant-shell">
+          <header class="assistant-header">
+            <div class="assistant-identity">
+              <div class="brand-mark" id="logoPanel">
+                <img
+                  id="brandLogo"
+                  src="./assets/dmt-electrical.png"
+                  alt="DMT Electrical Department logo"
+                />
+                <div id="logoFallback" class="logo-fallback" hidden>
+                  DMT ELECTRICAL DEPARTMENT
+                </div>
+              </div>
+
+              <div class="assistant-copy">
+                <p class="eyebrow">Electrical Intelligence Platform</p>
+                <h1>DMT Electrical Department AI</h1>
+                <p>
+                  Operational assistant for diagnostics, technical guidance,
+                  and documentation workflows.
+                </p>
+              </div>
+            </div>
+          </header>
+
+          <section class="assistant-panel" aria-labelledby="assistantTitle">
+            <h2 id="assistantTitle" class="visually-hidden">Assistant</h2>
+            <div class="assistant-brandbar" aria-hidden="true">
+              <img
+                class="assistant-brandbar-logo"
+                src="./assets/dmt-electrical.ico"
+                alt=""
+              />
+              <span class="assistant-brandbar-title"
+                >Electric Department AI &#9889;</span
+              >
+            </div>
+            <div id="statusBlock" class="status-block" aria-live="polite">
+              <div id="statusMessage">Loading assistant...</div>
+              <button id="retryButton" class="retry-button" type="button" hidden>
+                Retry
+              </button>
+            </div>
+            <div id="chatkitMount" class="chatkit-mount" hidden></div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script
+      src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
+      defer
+    ></script>
+    <script src="./app.js?v=20260306-2" defer></script>
+  </body>
+</html>
