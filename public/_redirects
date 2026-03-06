@@ -1,0 +1,3 @@
+/api/chatkit/session /.netlify/functions/chatkit-session 200
+/ /index.html 200
+/* /index.html 200
