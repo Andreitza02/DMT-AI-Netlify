@@ -1,15 +1,28 @@
 const statusBlock = document.getElementById("statusBlock");
 const statusMessage = document.getElementById("statusMessage");
 const retryButton = document.getElementById("retryButton");
+const generatedFilesPanel = document.getElementById("generatedFilesPanel");
+const generatedFilesList = document.getElementById("generatedFilesList");
 const chatkitMount = document.getElementById("chatkitMount");
 const brandLogo = document.getElementById("brandLogo");
 const logoFallback = document.getElementById("logoFallback");
 
 const USER_ID_STORAGE_KEY = "chatkit_demo_user_id";
 const ASSISTANT_NAME = "Electric Department AI \u26A1";
+const ATTACHMENT_ACCEPT = {
+  "application/pdf": [".pdf"],
+  "application/vnd.ms-excel": [".xls"],
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
+  "text/csv": [".csv"],
+  "image/*": [".png", ".jpg", ".jpeg", ".webp", ".gif"]
+};
 let chatInitialized = false;
 let readyTimerId = null;
 let primedClientSecret = null;
+let activeThreadId = null;
+let generatedFilesRequestId = 0;
+let generatedFilesRefreshId = null;
+let lastRenderedGeneratedFilesKey = "";
 
 function ensureUserId() {
   let userId = localStorage.getItem(USER_ID_STORAGE_KEY);
@@ -79,6 +92,246 @@ function hideStatus() {
   statusBlock.classList.remove("is-error");
 }
 
+function hideGeneratedFiles() {
+  lastRenderedGeneratedFilesKey = "";
+  generatedFilesList.innerHTML = "";
+  generatedFilesPanel.hidden = true;
+}
+
+function firstNonEmptyString(...values) {
+  for (const value of values) {
+    if (typeof value === "string") {
+      const trimmed = value.trim();
+      if (trimmed) {
+        return trimmed;
+      }
+    }
+  }
+  return "";
+}
+
+function getThreadItems(payload) {
+  if (Array.isArray(payload)) {
+    return payload;
+  }
+  if (Array.isArray(payload?.data)) {
+    return payload.data;
+  }
+  if (Array.isArray(payload?.items)) {
+    return payload.items;
+  }
+  return [];
+}
+
+function toGeneratedFile(annotation) {
+  if (!annotation || typeof annotation !== "object") {
+    return null;
+  }
+
+  const type = firstNonEmptyString(annotation.type, annotation.source?.type).toLowerCase();
+  if (type && !type.includes("file")) {
+    return null;
+  }
+
+  const fileId = firstNonEmptyString(
+    annotation.file_id,
+    annotation.fileId,
+    annotation.id,
+    annotation.source?.file_id,
+    annotation.source?.fileId,
+    annotation.container_file_citation?.file_id,
+    annotation.container_file?.file_id,
+    annotation.file?.id
+  );
+  const filename = firstNonEmptyString(
+    annotation.filename,
+    annotation.file_name,
+    annotation.source?.filename,
+    annotation.container_file_citation?.filename,
+    annotation.container_file?.filename,
+    annotation.file?.filename
+  );
+  const containerId = firstNonEmptyString(
+    annotation.container_id,
+    annotation.containerId,
+    annotation.source?.container_id,
+    annotation.source?.containerId,
+    annotation.container_file_citation?.container_id,
+    annotation.container_file?.container_id
+  );
+
+  if (!fileId || !filename) {
+    return null;
+  }
+
+  return {
+    fileId,
+    filename,
+    containerId
+  };
+}
+
+function collectGeneratedFiles(node, files, visited) {
+  if (!node || typeof node !== "object") {
+    return;
+  }
+
+  if (visited.has(node)) {
+    return;
+  }
+  visited.add(node);
+
+  if (Array.isArray(node)) {
+    for (const entry of node) {
+      collectGeneratedFiles(entry, files, visited);
+    }
+    return;
+  }
+
+  const generatedFile = toGeneratedFile(node);
+  if (generatedFile) {
+    files.push(generatedFile);
+  }
+
+  for (const value of Object.values(node)) {
+    collectGeneratedFiles(value, files, visited);
+  }
+}
+
+function extractAssistantGeneratedFiles(items) {
+  const generatedFiles = [];
+  const visited = new WeakSet();
+
+  for (const item of items) {
+    const type = firstNonEmptyString(item?.type, item?.item_type).toLowerCase();
+    if (type !== "assistant_message") {
+      continue;
+    }
+    collectGeneratedFiles(item, generatedFiles, visited);
+  }
+
+  const uniqueFiles = [];
+  const seenKeys = new Set();
+
+  for (let index = generatedFiles.length - 1; index >= 0; index -= 1) {
+    const file = generatedFiles[index];
+    const fileKey = [file.fileId, file.containerId, file.filename].join("::");
+    if (seenKeys.has(fileKey)) {
+      continue;
+    }
+    seenKeys.add(fileKey);
+    uniqueFiles.push(file);
+  }
+
+  return uniqueFiles.reverse();
+}
+
+function buildDownloadUrl(file) {
+  const params = new URLSearchParams();
+  params.set("filename", file.filename);
+  if (file.containerId) {
+    params.set("container_id", file.containerId);
+  }
+  return `/api/files/${encodeURIComponent(file.fileId)}/content?${params.toString()}`;
+}
+
+function renderGeneratedFiles(files) {
+  const nextKey = JSON.stringify(files);
+  if (nextKey === lastRenderedGeneratedFilesKey) {
+    return;
+  }
+
+  lastRenderedGeneratedFilesKey = nextKey;
+  generatedFilesList.innerHTML = "";
+
+  if (!files.length) {
+    generatedFilesPanel.hidden = true;
+    return;
+  }
+
+  for (const file of files) {
+    const item = document.createElement("div");
+    item.className = "generated-file-item";
+
+    const filename = document.createElement("span");
+    filename.className = "generated-file-name";
+    filename.textContent = file.filename;
+
+    const link = document.createElement("a");
+    link.className = "generated-file-link";
+    link.href = buildDownloadUrl(file);
+    link.download = file.filename;
+    link.textContent = `Download ${file.filename}`;
+
+    item.appendChild(filename);
+    item.appendChild(link);
+    generatedFilesList.appendChild(item);
+  }
+
+  generatedFilesPanel.hidden = false;
+}
+
+async function refreshGeneratedFiles(threadId) {
+  if (!threadId) {
+    hideGeneratedFiles();
+    return;
+  }
+
+  const requestId = generatedFilesRequestId + 1;
+  generatedFilesRequestId = requestId;
+
+  try {
+    const response = await fetch(
+      `/api/chatkit/threads/${encodeURIComponent(threadId)}/items`,
+      {
+        headers: {
+          Accept: "application/json"
+        }
+      }
+    );
+
+    let data = {};
+    try {
+      data = await response.json();
+    } catch {
+      data = {};
+    }
+
+    if (requestId !== generatedFilesRequestId) {
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to load generated files.");
+    }
+
+    renderGeneratedFiles(extractAssistantGeneratedFiles(getThreadItems(data)));
+  } catch (error) {
+    if (requestId !== generatedFilesRequestId) {
+      return;
+    }
+    console.error("Generated files refresh failed:", error);
+  }
+}
+
+function scheduleGeneratedFilesRefresh(threadId, delayMs = 250) {
+  if (!threadId) {
+    hideGeneratedFiles();
+    return;
+  }
+
+  activeThreadId = threadId;
+
+  if (generatedFilesRefreshId) {
+    clearTimeout(generatedFilesRefreshId);
+  }
+
+  generatedFilesRefreshId = setTimeout(() => {
+    generatedFilesRefreshId = null;
+    refreshGeneratedFiles(activeThreadId);
+  }, delayMs);
+}
+
 async function waitForChatKitElement(timeoutMs = 10000) {
   if (customElements.get("openai-chatkit")) {
     return;
@@ -99,6 +352,8 @@ async function initChatKit() {
 
   setStatus("Loading assistant...");
   chatkitMount.hidden = false;
+  hideGeneratedFiles();
+  activeThreadId = null;
 
   try {
     primedClientSecret = await requestClientSecret();
@@ -108,7 +363,20 @@ async function initChatKit() {
     chatkit.style.height = "100%";
 
     chatkit.addEventListener("chatkit.ready", hideStatus);
-    chatkit.addEventListener("chatkit.thread.load.end", hideStatus);
+    chatkit.addEventListener("chatkit.thread.load.end", (event) => {
+      hideStatus();
+      scheduleGeneratedFilesRefresh(event?.detail?.threadId || activeThreadId);
+    });
+    chatkit.addEventListener("chatkit.thread.change", (event) => {
+      const threadId = firstNonEmptyString(
+        event?.detail?.threadId,
+        event?.detail?.thread?.id
+      );
+      scheduleGeneratedFilesRefresh(threadId);
+    });
+    chatkit.addEventListener("chatkit.response.end", () => {
+      scheduleGeneratedFilesRefresh(activeThreadId, 500);
+    });
     chatkit.addEventListener("chatkit.error", (event) => {
       const message =
         event?.detail?.error?.message ||
@@ -123,6 +391,7 @@ async function initChatKit() {
 
     chatkit.setOptions({
       frameTitle: ASSISTANT_NAME,
+      locale: "en-US",
       api: {
         getClientSecret
       },
@@ -148,10 +417,7 @@ async function initChatKit() {
           enabled: true,
           maxSize: 20 * 1024 * 1024,
           maxCount: 3,
-          accept: {
-            "application/pdf": [".pdf"],
-            "image/*": [".png", ".jpg", ".jpeg", ".webp", ".gif"]
-          }
+          accept: ATTACHMENT_ACCEPT
         }
       }
     });

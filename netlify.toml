@@ -7,3 +7,12 @@
   to = "/.netlify/functions/chatkit-session"
   status = 200
 
+[[redirects]]
+  from = "/api/files/:fileId/content"
+  to = "/.netlify/functions/file-content?fileId=:fileId"
+  status = 200
+
+[[redirects]]
+  from = "/api/chatkit/threads/:threadId/items"
+  to = "/.netlify/functions/thread-items?threadId=:threadId"
+  status = 200

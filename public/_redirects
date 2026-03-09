@@ -1,3 +1,5 @@
 /api/chatkit/session /.netlify/functions/chatkit-session 200
+/api/files/:fileId/content /.netlify/functions/file-content?fileId=:fileId 200
+/api/chatkit/threads/:threadId/items /.netlify/functions/thread-items?threadId=:threadId 200
 / /index.html 200
 /* /index.html 200

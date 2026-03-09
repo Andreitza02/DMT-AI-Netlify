@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DMT Electrical Department AI</title>
+    <link rel="icon" type="image/png" href="./assets/dmt-electrical.png" />
+    <link rel="apple-touch-icon" href="./assets/dmt-electrical.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -55,12 +57,34 @@
                 >Electric Department AI &#9889;</span
               >
             </div>
+            <section class="mobile-assistant-intro" aria-hidden="true">
+              <img
+                class="mobile-assistant-intro-logo"
+                src="./assets/dmt-electrical.png"
+                alt=""
+              />
+              <div class="mobile-assistant-intro-copy">
+                <p class="mobile-assistant-intro-eyebrow">
+                  Electrical Intelligence Platform
+                </p>
+                <p class="mobile-assistant-intro-title">DMT Electrical Department AI</p>
+              </div>
+            </section>
             <div id="statusBlock" class="status-block" aria-live="polite">
               <div id="statusMessage">Loading assistant...</div>
               <button id="retryButton" class="retry-button" type="button" hidden>
                 Retry
               </button>
             </div>
+            <section
+              id="generatedFilesPanel"
+              class="generated-files-panel"
+              aria-live="polite"
+              hidden
+            >
+              <div class="generated-files-heading">Generated files</div>
+              <div id="generatedFilesList" class="generated-files-list"></div>
+            </section>
             <div id="chatkitMount" class="chatkit-mount" hidden></div>
           </section>
         </div>
@@ -71,6 +95,6 @@
       src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
       defer
     ></script>
-    <script src="./app.js?v=20260306-2" defer></script>
+    <script src="./app.js?v=20260309-4" defer></script>
   </body>
 </html>
