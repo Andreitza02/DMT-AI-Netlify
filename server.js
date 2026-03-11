@@ -80,9 +80,7 @@ app.post("/api/chatkit/session", async (req, res) => {
           },
           chatkit_configuration: {
             file_upload: {
-              enabled: true,
-              max_files: 3,
-              max_file_size: 20
+              enabled: true
             },
             history: {
               enabled: true

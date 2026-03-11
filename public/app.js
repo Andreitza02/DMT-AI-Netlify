@@ -11,6 +11,7 @@ const USER_ID_STORAGE_KEY = "chatkit_demo_user_id";
 const ASSISTANT_NAME = "Electric Department AI \u26A1";
 const ATTACHMENT_ACCEPT = {
   "application/pdf": [".pdf"],
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
   "application/vnd.ms-excel": [".xls"],
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
   "text/csv": [".csv"],
@@ -415,7 +416,6 @@ async function initChatKit() {
         placeholder: "Send a message...",
         attachments: {
           enabled: true,
-          maxCount: 0,
           accept: ATTACHMENT_ACCEPT
         }
       }
