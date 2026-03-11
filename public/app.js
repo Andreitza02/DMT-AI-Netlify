@@ -415,8 +415,7 @@ async function initChatKit() {
         placeholder: "Send a message...",
         attachments: {
           enabled: true,
-          maxSize: 20 * 1024 * 1024,
-          maxCount: 3,
+          maxCount: 0,
           accept: ATTACHMENT_ACCEPT
         }
       }
