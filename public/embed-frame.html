@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>Embedded Assistant</title>
+    <link rel="stylesheet" href="./embed-frame.css?v=20260316-1" />
+  </head>
+  <body>
+    <main class="embed-shell">
+      <div id="statusBlock" class="status-block" aria-live="polite">
+        <div id="statusMessage">Loading assistant...</div>
+        <button id="retryButton" class="retry-button" type="button" hidden>
+          Retry
+        </button>
+      </div>
+      <section
+        id="generatedFilesPanel"
+        class="generated-files-panel"
+        aria-live="polite"
+        hidden
+      >
+        <div class="generated-files-heading">Generated files</div>
+        <div id="generatedFilesList" class="generated-files-list"></div>
+      </section>
+      <div id="chatkitMount" class="chatkit-mount" hidden></div>
+    </main>
+
+    <script
+      src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js"
+      defer
+    ></script>
+    <script src="./app.js?v=20260316-1" defer></script>
+  </body>
+</html>

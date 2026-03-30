@@ -6,9 +6,19 @@ const generatedFilesList = document.getElementById("generatedFilesList");
 const chatkitMount = document.getElementById("chatkitMount");
 const brandLogo = document.getElementById("brandLogo");
 const logoFallback = document.getElementById("logoFallback");
+const mobileNavItems = Array.from(
+  document.querySelectorAll(".mobile-bottom-nav-item[data-mobile-tab]")
+);
+const mobilePages = Array.from(document.querySelectorAll("[data-mobile-page]"));
+const searchParams = new URLSearchParams(window.location.search);
+const STORAGE_SITE_KEY =
+  searchParams.get("site_key")?.trim().replace(/[^a-z0-9_-]+/gi, "_") || "default";
 
-const USER_ID_STORAGE_KEY = "chatkit_demo_user_id";
-const ASSISTANT_NAME = "Electric Department AI \u26A1";
+const USER_ID_STORAGE_KEY = `chatkit_demo_user_id_${STORAGE_SITE_KEY}`;
+const ASSISTANT_NAME =
+  searchParams.get("assistant_name")?.trim() || "Electric Department AI \u26A1";
+const START_GREETING =
+  searchParams.get("greeting")?.trim() || "How can I help you today?";
 const ATTACHMENT_ACCEPT = {
   "application/pdf": [".pdf"],
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
@@ -24,16 +34,82 @@ let activeThreadId = null;
 let generatedFilesRequestId = 0;
 let generatedFilesRefreshId = null;
 let lastRenderedGeneratedFilesKey = "";
+let transientUserId = "";
+let activeMobileTab = "assistant";
+
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 768px)").matches;
+}
+
+function shouldInitChatKitNow() {
+  return !isMobileViewport() || activeMobileTab === "assistant";
+}
+
+function setActiveMobileTab(tabId) {
+  if (!mobileNavItems.length || !mobilePages.length) {
+    return;
+  }
+
+  const hasRequestedTab = mobileNavItems.some(
+    (item) => item.dataset.mobileTab === tabId
+  );
+  activeMobileTab = hasRequestedTab ? tabId : "assistant";
+
+  for (const item of mobileNavItems) {
+    const isActive = item.dataset.mobileTab === activeMobileTab;
+    item.classList.toggle("is-active", isActive);
+    if (isActive) {
+      item.setAttribute("aria-current", "page");
+    } else {
+      item.removeAttribute("aria-current");
+    }
+  }
+
+  const showMobilePages = isMobileViewport();
+  const shouldShowAssistantPage = !showMobilePages || activeMobileTab === "assistant";
+
+  for (const page of mobilePages) {
+    const pageId = page.dataset.mobilePage;
+    const isAssistantPage = pageId === "assistant";
+    const shouldShow = showMobilePages ? pageId === activeMobileTab : isAssistantPage;
+
+    page.hidden = !shouldShow;
+    page.classList.toggle("is-mobile-active", showMobilePages && shouldShow);
+  }
+
+  if (chatkitMount) {
+    const shouldShowChat = shouldShowAssistantPage && chatInitialized;
+    chatkitMount.hidden = !shouldShowChat;
+  }
+}
+
+function readStoredUserId() {
+  try {
+    return localStorage.getItem(USER_ID_STORAGE_KEY);
+  } catch {
+    return transientUserId;
+  }
+}
+
+function writeStoredUserId(userId) {
+  transientUserId = userId;
+
+  try {
+    localStorage.setItem(USER_ID_STORAGE_KEY, userId);
+  } catch {
+    // Third-party iframe contexts can block storage access. Keep the id in memory.
+  }
+}
 
 function ensureUserId() {
-  let userId = localStorage.getItem(USER_ID_STORAGE_KEY);
+  let userId = readStoredUserId();
   if (!userId) {
     if (window.crypto && typeof window.crypto.randomUUID === "function") {
       userId = `web_${window.crypto.randomUUID()}`;
     } else {
       userId = `web_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
     }
-    localStorage.setItem(USER_ID_STORAGE_KEY, userId);
+    writeStoredUserId(userId);
   }
   return userId;
 }
@@ -406,7 +482,7 @@ async function initChatKit() {
         }
       },
       startScreen: {
-        greeting: "How can I help you today?"
+        greeting: START_GREETING
       },
       threadItemActions: {
         feedback: true,
@@ -457,6 +533,34 @@ if (brandLogo && logoFallback) {
   });
 }
 
+if (mobileNavItems.length && mobilePages.length) {
+  const initialActiveTab =
+    mobileNavItems.find((item) => item.classList.contains("is-active"))?.dataset.mobileTab ||
+    "assistant";
+
+  setActiveMobileTab(initialActiveTab);
+
+  for (const item of mobileNavItems) {
+    item.addEventListener("click", () => {
+      const nextTab = item.dataset.mobileTab || "assistant";
+      setActiveMobileTab(nextTab);
+      if (shouldInitChatKitNow() && !chatInitialized) {
+        initChatKit();
+      }
+    });
+  }
+
+  window.addEventListener("resize", () => {
+    setActiveMobileTab(activeMobileTab);
+    if (shouldInitChatKitNow() && !chatInitialized) {
+      initChatKit();
+    }
+  });
+}
+
 window.addEventListener("load", () => {
-  initChatKit();
+  setActiveMobileTab(activeMobileTab);
+  if (shouldInitChatKitNow()) {
+    initChatKit();
+  }
 });
