@@ -12,6 +12,21 @@ This project runs a local Node.js + Express server and a static HTML/CSS/JS fron
 - Composer tools explicitly removed (`tools: []`) to avoid "State variables" chip
 - Inline loading/error state with retry
 
+## One-Script Embed
+
+If you want customers to add the assistant with a single script tag, host this app on your own domain and give them:
+
+```html
+<script
+  src="https://your-domain.com/embed.js"
+  data-title="Your AI Assistant"
+  data-greeting="How can I help?"
+  defer
+></script>
+```
+
+That script opens a hosted iframe at `/embed-frame.html`, so client sites do not need your API routes or API key.
+
 ## Setup
 
 1. Install dependencies:

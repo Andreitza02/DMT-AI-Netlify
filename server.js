@@ -80,7 +80,7 @@ app.post("/api/chatkit/session", async (req, res) => {
           },
           chatkit_configuration: {
             file_upload: {
-              enabled: true
+              enabled: false
             },
             history: {
               enabled: true

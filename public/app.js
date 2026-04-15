@@ -19,14 +19,6 @@ const ASSISTANT_NAME =
   searchParams.get("assistant_name")?.trim() || "Electric Department AI \u26A1";
 const START_GREETING =
   searchParams.get("greeting")?.trim() || "How can I help you today?";
-const ATTACHMENT_ACCEPT = {
-  "application/pdf": [".pdf"],
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": [".docx"],
-  "application/vnd.ms-excel": [".xls"],
-  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [".xlsx"],
-  "text/csv": [".csv"],
-  "image/*": [".png", ".jpg", ".jpeg", ".webp", ".gif"]
-};
 let chatInitialized = false;
 let readyTimerId = null;
 let primedClientSecret = null;
@@ -491,8 +483,7 @@ async function initChatKit() {
       composer: {
         placeholder: "Send a message...",
         attachments: {
-          enabled: true,
-          accept: ATTACHMENT_ACCEPT
+          enabled: false
         }
       }
     });

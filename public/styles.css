@@ -31,11 +31,9 @@ body {
   background:
     radial-gradient(circle at 15% 12%, rgba(198, 242, 21, 0.12), transparent 38%),
     radial-gradient(circle at 92% 22%, rgba(113, 119, 130, 0.16), transparent 34%),
-    repeating-linear-gradient(
-      90deg,
+    repeating-linear-gradient(90deg,
       rgba(255, 255, 255, 0.018) 0 1px,
-      transparent 1px 26px
-    ),
+      transparent 1px 26px),
     var(--bg);
 }
 
@@ -45,10 +43,7 @@ body {
   min-height: 100dvh;
   max-width: 1440px;
   margin: 0 auto;
-  padding: calc(24px + env(safe-area-inset-top, 0px))
-    calc(24px + env(safe-area-inset-right, 0px))
-    calc(24px + env(safe-area-inset-bottom, 0px))
-    calc(24px + env(safe-area-inset-left, 0px));
+  padding: calc(24px + env(safe-area-inset-top, 0px)) calc(24px + env(safe-area-inset-right, 0px)) calc(24px + env(safe-area-inset-bottom, 0px)) calc(24px + env(safe-area-inset-left, 0px));
   display: grid;
   place-items: center;
 }
@@ -124,7 +119,7 @@ body {
 }
 
 .brand-mark img {
-  width: 100%;
+  width: 106%;
   height: auto;
   display: block;
   border-radius: 12px;
@@ -191,8 +186,8 @@ body {
 }
 
 .assistant-brandbar-logo {
-  width: 34px;
-  height: 34px;
+  width: 38px;
+  height: 38px;
   border-radius: 10px;
   object-fit: cover;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.22);
@@ -436,9 +431,7 @@ body {
     box-shadow: none;
     backdrop-filter: none;
     background: #0c0d0f;
-    padding-bottom: calc(
-      var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px)
-    );
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-page {
@@ -453,9 +446,7 @@ body {
     backdrop-filter: none;
     background: #0c0d0f;
     overflow: hidden;
-    padding-bottom: calc(
-      var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px)
-    );
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
   }
 
   .mobile-page.is-mobile-active {
@@ -476,8 +467,8 @@ body {
   }
 
   .assistant-brandbar-logo {
-    width: 22px;
-    height: 22px;
+    width: 24px;
+    height: 24px;
     border-radius: 6px;
   }
 
@@ -582,6 +573,270 @@ body {
     color: #b5bdc9;
     font-size: 0.86rem;
     line-height: 1.45;
+  }
+
+  .mobile-contact-page-content {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+    min-height: 100%;
+    padding: 0;
+    gap: 0;
+    background:
+      radial-gradient(circle at top right, rgba(198, 242, 21, 0.1), transparent 34%),
+      linear-gradient(180deg, #0d0f13 0%, #090b0f 100%);
+  }
+
+  #mobileContactPage,
+  #mobileContactPage * {
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  }
+
+  #mobileContactPage {
+    position: relative;
+  }
+
+  .mobile-contact-card {
+    position: relative;
+    overflow: hidden;
+    border: 0.5px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0px;
+    background:
+      linear-gradient(160deg, rgba(31, 35, 41, 0.98), rgba(12, 14, 18, 0.98));
+    box-shadow:
+      0 18px 32px rgba(0, 0, 0, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  .mobile-contact-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(198, 242, 21, 0.14), transparent 52%);
+    pointer-events: none;
+  }
+
+  .mobile-contact-card-hero {
+    min-height: 100px;
+    padding: 38px 34px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .mobile-contact-kicker,
+  .mobile-contact-name,
+  .mobile-contact-label,
+  .mobile-contact-value {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mobile-contact-kicker {
+    margin: 0;
+    color: var(--neon-soft);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .mobile-library-status {
+    margin: 0;
+    padding: 20px 22px 0;
+    color: var(--neon-soft);
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    line-height: 1;
+  }
+
+  .mobile-library-copy {
+    padding: 14px 22px 0;
+  }
+
+  .mobile-library-heading {
+    margin: 0;
+    color: #f8fafc;
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .mobile-library-subcopy {
+    margin: 8px 0 0;
+    color: #f8fafc;
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .mobile-library-subline {
+    margin: 6px 0 0;
+    color: #d1d7e0;
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 0.74rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .mobile-library-item {
+    margin-top: 18px;
+  }
+
+  .mobile-library-item-title {
+    margin: 0;
+    color: #f8fafc;
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .mobile-library-item-copy {
+    margin: 8px 0 0;
+    color: #d1d7e0;
+    font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.45;
+  }
+
+  .mobile-library-inline-nowrap {
+    white-space: nowrap;
+  }
+
+  .mobile-contact-name {
+    margin: 0;
+    color: #f9fafb;
+    font-size: clamp(1.6rem, 5vw, 2rem);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+
+  .mobile-contact-profile {
+    flex: 1 1 auto;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 0;
+  }
+
+  .mobile-contact-stack {
+    display: grid;
+    align-content: start;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    z-index: 1;
+  }
+
+  .mobile-contact-link {
+    min-height: 116px;
+    padding: 14px 34px 22px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+    transition:
+      transform 180ms ease,
+      border-color 180ms ease,
+      background 180ms ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .mobile-contact-link+.mobile-contact-link {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobile-contact-stack .mobile-contact-link:last-of-type {
+    padding-bottom: 8px;
+  }
+
+  .mobile-contact-link:active {
+    transform: scale(0.985);
+  }
+
+  .mobile-contact-link:focus-visible {
+    outline: 2px solid rgba(198, 242, 21, 0.42);
+    outline-offset: 2px;
+  }
+
+  .mobile-contact-label {
+    margin: 0;
+    color: #98a2b3;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .mobile-contact-value {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 1.08rem;
+    line-height: 1.35;
+    font-weight: 700;
+    word-break: break-word;
+  }
+
+  .mobile-contact-note {
+    position: relative;
+    z-index: 2;
+    margin: -10px 0 0;
+    padding: 0 34px 44px;
+    color: #aeb7c4;
+    font-size: 0.9rem;
+    line-height: 1.55;
+  }
+
+  .mobile-contact-corner-badge {
+    position: absolute;
+    right: 12px;
+    bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 12px);
+    z-index: 6;
+    width: auto;
+    min-height: 42px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    background: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    pointer-events: none;
+  }
+
+  .mobile-contact-corner-badge-logo {
+    width: 58px;
+    height: auto;
+    display: block;
+    flex: 0 0 auto;
+    filter: grayscale(1) brightness(0.82) invert(1);
+    mix-blend-mode: screen;
+    opacity: 0.96;
+  }
+
+  .mobile-contact-corner-badge-text {
+    margin: 0;
+    color: #f8fafc;
+    font-size: 0.48rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .mobile-contact-corner-badge-text span {
+    color: #7ea30f;
   }
 
   .mobile-bottom-nav {
