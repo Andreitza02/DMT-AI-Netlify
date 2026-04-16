@@ -95,6 +95,7 @@ body {
 }
 
 .assistant-header {
+  position: relative;
   border-radius: 28px;
   padding: 26px;
   display: flex;
@@ -108,21 +109,21 @@ body {
 }
 
 .brand-mark {
-  min-height: 240px;
-  background: #0f1012;
-  border-radius: 20px;
-  border: 1px solid #2c3037;
+  min-height: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
   display: grid;
   place-items: center;
   overflow: hidden;
-  padding: 18px;
+  padding: 0;
 }
 
 .brand-mark img {
-  width: 106%;
+  width: min(100%, 200px);
   height: auto;
   display: block;
-  border-radius: 12px;
+  border-radius: 0;
 }
 
 .logo-fallback {
@@ -162,6 +163,219 @@ body {
   color: var(--muted);
   font-size: 1.02rem;
   max-width: 32ch;
+}
+
+.desktop-library-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.desktop-library-status {
+  margin: 0;
+  color: var(--neon-soft);
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.desktop-library-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.desktop-library-heading {
+  margin: 0;
+  color: #f8fafc;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.desktop-library-subcopy {
+  margin: 0;
+  color: #f8fafc;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.desktop-library-subline {
+  margin: 0;
+  color: #d1d7e0;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.74rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.desktop-library-item-secondary {
+  padding-top: 4px;
+}
+
+.desktop-library-item-title {
+  margin: 0;
+  color: #f8fafc;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.desktop-library-item-copy {
+  margin: 0;
+  color: #d1d7e0;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.desktop-mobile-hint {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.desktop-mobile-hint-trigger {
+  width: 46px;
+  height: 46px;
+  border: 1px solid rgba(198, 242, 21, 0.24);
+  border-radius: 999px;
+  background: linear-gradient(160deg, rgba(31, 35, 41, 0.96), rgba(12, 14, 18, 0.96));
+  color: var(--neon-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.22);
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease;
+}
+
+.desktop-mobile-hint-trigger:hover {
+  transform: translateY(-1px);
+  border-color: rgba(198, 242, 21, 0.42);
+  background: linear-gradient(160deg, rgba(39, 44, 50, 0.98), rgba(14, 16, 20, 0.98));
+}
+
+.desktop-mobile-hint-trigger:focus-visible {
+  outline: 2px solid rgba(198, 242, 21, 0.5);
+  outline-offset: 3px;
+}
+
+.desktop-mobile-hint-trigger svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  fill: currentColor;
+  transform-origin: center;
+  animation: desktop-mobile-hint-tremble 2.8s ease-in-out infinite;
+  will-change: transform;
+  transition: transform 220ms ease;
+}
+
+.desktop-mobile-hint-popover {
+  position: absolute;
+  top: 0;
+  left: 58px;
+  width: 288px;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  background: linear-gradient(160deg, #2a2f36, #12161b);
+  box-shadow: 0 26px 44px rgba(0, 0, 0, 0.26);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease,
+    visibility 180ms ease;
+}
+
+.desktop-mobile-hint:hover .desktop-mobile-hint-popover,
+.desktop-mobile-hint:focus-within .desktop-mobile-hint-popover {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.desktop-mobile-hint-image {
+  width: 100%;
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin: 28px auto 0;
+  border-radius: 18px;
+}
+
+.desktop-mobile-hint-title {
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  margin: 0;
+  transform: translateX(-50%);
+  color: var(--neon);
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.desktop-mobile-hint-copy {
+  margin: 12px 0 0;
+  color: #f8fafc;
+  font-family: "OpenAI Sans", "Segoe UI", sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.desktop-mobile-hint-trigger:hover svg,
+.desktop-mobile-hint-trigger:focus-visible svg {
+  animation: none;
+  transform: scaleX(-1) scale(1.02);
+}
+
+@keyframes desktop-mobile-hint-tremble {
+  0%,
+  78%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  81% {
+    transform: translate3d(-0.8px, 0.2px, 0) rotate(-2deg);
+  }
+  84% {
+    transform: translate3d(0.8px, -0.2px, 0) rotate(2deg);
+  }
+  87% {
+    transform: translate3d(-0.6px, 0.2px, 0) rotate(-1.4deg);
+  }
+  90% {
+    transform: translate3d(0.6px, 0, 0) rotate(1.4deg);
+  }
+  93% {
+    transform: translate3d(-0.3px, -0.1px, 0) rotate(-0.7deg);
+  }
+  96% {
+    transform: translate3d(0.3px, 0.1px, 0) rotate(0.7deg);
+  }
 }
 
 .assistant-panel {

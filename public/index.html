@@ -12,7 +12,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@500;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./styles.css?v=20260414-1" />
+    <link rel="stylesheet" href="./styles.css?v=20260416-1" />
   </head>
   <body>
     <main class="page-shell">
@@ -22,11 +22,37 @@
       <section class="assistant-stage">
         <div class="assistant-shell">
           <header class="assistant-header">
+            <div class="desktop-mobile-hint">
+              <button
+                class="desktop-mobile-hint-trigger"
+                type="button"
+                aria-label="Show mobile version preview"
+              >
+                <svg viewBox="0 0 24 24" role="presentation">
+                  <path
+                    d="M8 2.5h8A2.5 2.5 0 0 1 18.5 5v14a2.5 2.5 0 0 1-2.5 2.5H8A2.5 2.5 0 0 1 5.5 19V5A2.5 2.5 0 0 1 8 2.5zm0 1.5A1 1 0 0 0 7 5v14a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H8zm4 13.75a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2zM9 6.25h6a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1 0-1.5z"
+                  />
+                </svg>
+              </button>
+
+              <div class="desktop-mobile-hint-popover">
+                <p class="desktop-mobile-hint-title">Mobile App</p>
+                <img
+                  class="desktop-mobile-hint-image"
+                  src="./assets/Mobile Version.png"
+                  alt="Mobile version preview"
+                />
+                <p class="desktop-mobile-hint-copy">
+                  Access all planning insights on the go with a mobile-friendly interface, perfect for meetings or directly on the production floor-no need to be in the office.
+                </p>
+              </div>
+            </div>
+
             <div class="assistant-identity">
               <div class="brand-mark" id="logoPanel">
                 <img
                   id="brandLogo"
-                  src="./assets/image-removebg-preview.png"
+                  src="./assets/dmt-logo.jpg"
                   alt="DMT logo"
                 />
                 <div id="logoFallback" class="logo-fallback" hidden>
@@ -34,14 +60,32 @@
                 </div>
               </div>
 
-              <div class="assistant-copy">
-                <p class="eyebrow">Electrical Intelligence Platform</p>
-                <h1>DMT Electrical Department AI</h1>
-                <p>
-                  Operational assistant for diagnostics, technical guidance,
-                  and documentation workflows.
-                </p>
+              <div class="desktop-library-copy">
+                <p class="desktop-library-status">Active :</p>
+                <div class="desktop-library-item">
+                  <p class="desktop-library-heading">Master Planning 2026</p>
+                  <p class="desktop-library-subcopy">
+                    Get a complete overview of all departments in one place and receive instant, clear answers for faster and smarter planning decisions.
+                  </p>
+                  <p class="desktop-library-subline">
+                    Now : Hydraulic, Electric and Electric Inquiry, Production Hall 3, Hall 2 and Hall 1
+                  </p>
+                </div>
+
+                <div class="desktop-library-item desktop-library-item-secondary">
+                  <p class="desktop-library-item-title">Electricians Capacity &amp; Workload Overview</p>
+                  <p class="desktop-library-item-copy">
+                    See your team's workload at a glance with a clear segmented chart and make smarter planning decisions instantly.
+                  </p>
+                </div>
+                <div class="desktop-library-item desktop-library-item-secondary">
+                  <p class="desktop-library-item-title">Senior MES</p>
+                  <p class="desktop-library-item-copy">
+                    Get clear, step-by-step guidance for Senior MES workflows in seconds-from BOM import to production orders, status checks, and operational follow-up.
+                  </p>
+                </div>
               </div>
+
             </div>
           </header>
 
@@ -135,6 +179,12 @@
                   <p class="mobile-library-item-title">Electricians Capacity &amp; Workload Overview</p>
                   <p class="mobile-library-item-copy">
                     See your team's workload at a glance with a clear segmented chart and make smarter planning decisions instantly.
+                  </p>
+                </div>
+                <div class="mobile-library-item">
+                  <p class="mobile-library-item-title">Senior MES</p>
+                  <p class="mobile-library-item-copy">
+                    Get clear, step-by-step guidance for Senior MES workflows in seconds-from BOM import to production orders, status checks, and operational follow-up.
                   </p>
                 </div>
               </div>
