@@ -6,6 +6,7 @@ const generatedFilesList = document.getElementById("generatedFilesList");
 const chatkitMount = document.getElementById("chatkitMount");
 const brandLogo = document.getElementById("brandLogo");
 const logoFallback = document.getElementById("logoFallback");
+const launchSplash = document.getElementById("launchSplash");
 const mobileNavItems = Array.from(
   document.querySelectorAll(".mobile-bottom-nav-item[data-mobile-tab]")
 );
@@ -28,6 +29,19 @@ let generatedFilesRefreshId = null;
 let lastRenderedGeneratedFilesKey = "";
 let transientUserId = "";
 let activeMobileTab = "assistant";
+let launchSplashDismissed = false;
+
+function dismissLaunchSplash() {
+  if (!launchSplash || launchSplashDismissed) {
+    return;
+  }
+
+  launchSplashDismissed = true;
+  document.body.classList.add("is-launch-complete");
+  window.setTimeout(() => {
+    launchSplash.hidden = true;
+  }, 560);
+}
 
 function isMobileViewport() {
   return window.matchMedia("(max-width: 768px)").matches;
@@ -554,6 +568,7 @@ window.addEventListener("load", () => {
   if (shouldInitChatKitNow()) {
     initChatKit();
   }
+  window.setTimeout(dismissLaunchSplash, 850);
 });
 
 if ("serviceWorker" in navigator) {

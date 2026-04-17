@@ -14,7 +14,9 @@
     <meta name="apple-mobile-web-app-title" content="DMT AI" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="manifest" href="/manifest.webmanifest" />
-    <link rel="icon" type="image/png" href="./assets/image-removebg-preview.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="shortcut icon" href="/assets/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -25,6 +27,16 @@
     <link rel="stylesheet" href="./styles.css?v=20260416-1" />
   </head>
   <body>
+    <div id="launchSplash" class="launch-splash" aria-hidden="true">
+      <div class="launch-splash-orbit"></div>
+      <div class="launch-splash-content">
+        <img
+          class="launch-splash-logo"
+          src="/assets/home-screen.png"
+          alt=""
+        />
+      </div>
+    </div>
     <main class="page-shell">
       <div class="ambient-glow ambient-glow-left"></div>
       <div class="ambient-glow ambient-glow-right"></div>
