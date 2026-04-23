@@ -45,7 +45,11 @@ cp .env.example .env
 
 ```env
 OPENAI_API_KEY=your_api_key_here
+WORKFLOW_ID=your_workflow_id_here
 PORT=3000
+APP_LOGIN_USERNAME=admin
+APP_LOGIN_PASSWORD=change_me_before_deploying
+APP_SESSION_SECRET=replace_with_a_long_random_secret
 ```
 
 4. Start server:
@@ -57,6 +61,12 @@ npm start
 5. Open:
 
 `http://localhost:3000`
+
+The app now shows a login page before the assistant loads. If you do not set
+the login env vars, the local fallback credentials are:
+
+- Username: `admin`
+- Password: `DmtAi-Access-2026!`
 
 ## API Endpoint
 
@@ -103,3 +113,6 @@ Response:
 - `OPENAI_API_KEY` is only read on the server from `process.env.OPENAI_API_KEY`.
 - The frontend never receives or prints the API key.
 - The session endpoint returns only `client_secret`.
+- Access to the app and API routes is blocked until a valid login cookie exists.
+- Replace the default login credentials with env vars before exposing the app to
+  other users.

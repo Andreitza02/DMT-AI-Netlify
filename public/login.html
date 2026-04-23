@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <title>DMT AI Login</title>
+    <meta name="theme-color" content="#486fa6" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Orbitron:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/login.css?v=20260423-1" />
+  </head>
+  <body class="login-page">
+    <main class="login-shell">
+      <section class="login-card" aria-labelledby="loginTitle">
+        <div class="login-card-ambient" aria-hidden="true"></div>
+        <div class="login-card-panel">
+          <header class="login-header">
+            <span class="login-header-line" aria-hidden="true"></span>
+            <h1 id="loginTitle">LOG IN</h1>
+            <span class="login-header-line" aria-hidden="true"></span>
+          </header>
+
+          <p id="loginMessage" class="login-message" hidden></p>
+
+          <form class="login-form" method="post" action="/login">
+            <input id="nextField" type="hidden" name="next" value="/" />
+
+            <label class="visually-hidden" for="username">Username</label>
+            <input
+              id="username"
+              class="login-input"
+              type="text"
+              name="username"
+              placeholder="Username"
+              autocomplete="username"
+              required
+            />
+
+            <label class="visually-hidden" for="password">Password</label>
+            <input
+              id="password"
+              class="login-input"
+              type="password"
+              name="password"
+              placeholder="Password"
+              autocomplete="current-password"
+              required
+            />
+
+            <div class="login-meta">
+              <button
+                class="login-help-link"
+                type="button"
+                aria-label="Ask Andrei Cucu"
+              >
+                Forgot Password
+              </button>
+            </div>
+
+            <button class="login-submit" type="submit">Log in</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <script src="/login.js?v=20260423-1" defer></script>
+  </body>
+</html>
