@@ -4,7 +4,11 @@ const path = require("path");
 const express = require("express");
 const dotenv = require("dotenv");
 
+const externalPort = process.env.PORT;
 dotenv.config({ path: path.join(__dirname, ".env"), override: true });
+if (externalPort) {
+  process.env.PORT = externalPort;
+}
 
 const app = express();
 
